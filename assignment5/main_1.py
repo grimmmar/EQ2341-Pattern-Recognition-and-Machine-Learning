@@ -2,6 +2,7 @@ import os
 import pickle
 import random
 from typing import List
+from matplotlib import pyplot as plt
 
 import numpy as np
 from scipy.io import wavfile
@@ -140,28 +141,23 @@ def main():
             hmm_train = pickle.load(para)
 
     print("Reading test wave data")
-    dir1 = './Songs/A'
-    songA = os.listdir(dir1)
-    songA.sort(key=lambda x: int(x[0:-4]))
-    dir2 = './Songs/B'
-    songB = os.listdir(dir2)
+    dir1 = './Songs/C'
+    songB = os.listdir(dir1)
     songB.sort(key=lambda x: int(x[0:-4]))
-    dir3 = './Songs/C'
-    songC = os.listdir(dir3)
-    songC.sort(key=lambda x: int(x[0:-4]))
 
     print("Reading test feature data")
-    feature1 = readfeature(songA, dir1, Train=False)
-    feature2 = readfeature(songB, dir2, Train=False)
-    feature3 = readfeature(songC, dir3, Train=False)
+    feature1 = readfeature(songB, dir1, Train=False)
 
-    print("Start testing")
-    testing(hmm_train, feature1)
-    testing(hmm_train, feature2)
-    testing(hmm_train, feature3)
+    res = hmm_train[2].rand(252)
+    res1 = res[0]
 
-    print("The HMM test is over")
+    plt.plot(feature1[0], label='training sequence')
+    plt.plot(res1[:, 0], label='random output sequence')
+    plt.legend()
+    plt.savefig('res3')
 
 
 if __name__ == "__main__":
     main()
+
+
